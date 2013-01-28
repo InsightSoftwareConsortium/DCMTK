@@ -30,6 +30,9 @@ if(DCMTK_USE_FIND_PACKAGE)
     find_package(JPEG)
     message(STATUS "Info: JPEG_FOUND=${JPEG_FOUND} JPEG_LIBRARY=${JPEG_LIBRARY}")
 
+    include_directories(${TIFF_INCLUDE_DIR})
+    set(LIBTIFF_LIBS ${TIFF_LIBRARY})
+    list(APPEND LIBTIFF_LIBS ${JPEG_LIBRARY})
     # turn off library if it could not be found
     if(NOT TIFF_FOUND OR NOT JPEG_FOUND)
       if(NOT TIFF_FOUND)
