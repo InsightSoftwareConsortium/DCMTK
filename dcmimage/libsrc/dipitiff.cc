@@ -30,7 +30,7 @@
 #include "dcmtk/dcmdata/dcuid.h"      /* for dcmtk version */
 
 BEGIN_EXTERN_C
-#include <tiffio.h>
+#include "itk_tiff.h"
 
 #ifdef HAVE_WINDOWS_H
 #include <io.h>  /* for _get_osfhandle() */

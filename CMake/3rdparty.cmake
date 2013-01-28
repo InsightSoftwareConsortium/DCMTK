@@ -25,7 +25,9 @@ mark_as_advanced(DCMTK_USE_FIND_PACKAGE)
 if(DCMTK_USE_FIND_PACKAGE)
   # Find TIFF
   if(DCMTK_WITH_TIFF)
-    find_package(TIFF QUIET)
+    include_directories(${TIFF_INCLUDE_DIR})
+    set(LIBTIFF_LIBS ${TIFF_LIBRARY})
+    list(APPEND LIBTIFF_LIBS ${JPEG_LIBRARY})
     # turn off library if it could not be found
     if(NOT TIFF_FOUND)
       message(STATUS "Warning: TIFF support will be disabled because libtiff was not found.")
@@ -118,8 +120,9 @@ if(DCMTK_USE_FIND_PACKAGE)
 
   # Find zlib
   if(DCMTK_WITH_ZLIB)
-    find_package(ZLIB QUIET)
-    if(NOT ZLIB_FOUND)
+    include_directories(${ZLIB_INCLUDE_DIRS})
+    set(ZLIB_LIBS ${ZLIB_LIBRARIES})
+    if(NOT ZLIB_LIBS)
       message(STATUS "Warning: ZLIB support will be disabled because zlib was not found.")
       set(WITH_ZLIB "")
       set(DCMTK_WITH_ZLIB OFF CACHE BOOL "" FORCE)

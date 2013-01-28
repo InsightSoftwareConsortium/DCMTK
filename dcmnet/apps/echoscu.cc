@@ -34,7 +34,7 @@
 #include "dcmtk/ofstd/ofstd.h"
 
 #ifdef WITH_ZLIB
-#include <zlib.h>                     /* for zlibVersion() */
+#include "itk_zlib.h"                     /* for zlibVersion() */
 #endif
 
 #ifdef PRIVATE_ECHOSCU_DECLARATIONS
