@@ -25,17 +25,17 @@
 /* This needs its own header because both vrscanl.c and vrscan.cc need it. */
 
 #include "dcmtk/config/osconfig.h"    /* make sure OS specific configuration is included first */
-#include <setjmp.h>
+// #include <setjmp.h>
 
 struct vrscan_error {
-    jmp_buf setjmp_buffer;
+    // jmp_buf setjmp_buffer;
     const char *error_msg;
 };
 
 #define YY_EXTRA_TYPE struct vrscan_error *
 #define YY_FATAL_ERROR(msg) do { \
     yyget_extra(yyscanner)->error_msg = msg; \
-    longjmp(yyget_extra(yyscanner)->setjmp_buffer, 1); \
+    /*longjmp(yyget_extra(yyscanner)->setjmp_buffer, 1)*/; \
 } while (0);
 
 #ifndef HAVE_UNISTD_H
