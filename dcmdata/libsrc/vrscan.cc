@@ -64,11 +64,13 @@ int vrscan::scan(const OFString& vr, const char* const value, const size_t size)
     error.error_msg = "(Unknown error)";
     yyset_extra(&error, scanner);
 
+    /*
     if (setjmp(error.setjmp_buffer)) // poor man's catch()
     {
         DCMDATA_WARN("Fatal error in lexer: " << error.error_msg);
-        return 16 /* UNKNOWN */;
+        return 16 /* UNKNOWN * /;
     }
+*/
 
     yy_scan_buffer(OFconst_cast(char*, buffer.data()), buffer.size(), scanner);
     const int result = yylex(scanner);
