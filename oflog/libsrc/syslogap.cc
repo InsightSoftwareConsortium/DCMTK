@@ -228,7 +228,9 @@ SysLogAppender::SysLogAppender(const tstring& id)
     // the address of the c_str() result remains stable for openlog &
     // co to use even if we use wstrings.
     , identStr(DCMTK_LOG4CPLUS_TSTRING_TO_STRING (id) )
+#ifndef __wasi__
     , hostname (helpers::getHostname (true))
+#endif
 {
     ::openlog(useIdent(identStr), 0, 0);
 }
@@ -245,7 +247,9 @@ SysLogAppender::SysLogAppender(const helpers::Properties & properties)
     , port (0)
     , syslogSocket ()
     , identStr ()
+#ifndef __wasi__
     , hostname (helpers::getHostname (true))
+#endif
 {
     ident = properties.getProperty( DCMTK_LOG4CPLUS_TEXT("ident") );
     facility = parseFacility (
@@ -290,7 +294,9 @@ SysLogAppender::SysLogAppender(const tstring& id, const tstring & h,
     // the address of the c_str() result remains stable for openlog &
     // co to use even if we use wstrings.
     , identStr(DCMTK_LOG4CPLUS_TSTRING_TO_STRING (id) )
+#ifndef __wasi__
     , hostname (helpers::getHostname (true))
+#endif
 { }
 
 

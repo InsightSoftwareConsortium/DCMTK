@@ -181,8 +181,10 @@ LogLog::logging_worker (tostream & os, bool (LogLog:: * cond) () const,
         os << prefix << msg << OFendl;
     }
 
+#ifndef __wasi__
     if (DCMTK_LOG4CPLUS_UNLIKELY (throw_flag))
         throw STD_NAMESPACE runtime_error (DCMTK_LOG4CPLUS_TSTRING_TO_STRING (msg));
+#endif
 }
 
 

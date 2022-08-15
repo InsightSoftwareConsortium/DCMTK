@@ -81,7 +81,9 @@ void
 AbstractSocket::close()
 {
     if(sock != INVALID_SOCKET_VALUE) {
+#ifndef __wasi__
         closeSocket(sock);
+#endif
         sock = INVALID_SOCKET_VALUE;
     }
 }
@@ -136,12 +138,14 @@ Socket::Socket()
 Socket::Socket(const tstring& address, unsigned short port, bool udp /*= false*/)
     : AbstractSocket()
 {
+#ifndef __wasi__
     sock = connectSocket(address, port, udp, state);
     if (sock == INVALID_SOCKET_VALUE)
         goto error;
 
     if (! udp && setTCPNoDelay (sock, true) != 0)
         goto error;
+#endif
 
     return;
 
@@ -167,6 +171,9 @@ Socket::~Socket()
 bool
 Socket::read(SocketBuffer& buffer)
 {
+#ifdef __wasi__
+    return false;
+#else
     long retval = helpers::read(sock, buffer);
     if(retval <= 0) {
         close();
@@ -176,6 +183,7 @@ Socket::read(SocketBuffer& buffer)
     }
 
     return (retval > 0);
+#endif
 }
 
 
@@ -183,23 +191,31 @@ Socket::read(SocketBuffer& buffer)
 bool
 Socket::write(const SocketBuffer& buffer)
 {
+#ifdef __wasi__
+    return false;
+#else
     long retval = helpers::write(sock, buffer);
     if(retval <= 0) {
         close();
     }
 
     return (retval > 0);
+#endif
 }
 
 
 bool
 Socket::write(const STD_NAMESPACE string & buffer)
 {
+#ifdef __wasi__
+    return false;
+#else
     long retval = helpers::write (sock, buffer);
     if (retval <= 0)
         close();
 
     return retval > 0;
+#endif
 }
 
 

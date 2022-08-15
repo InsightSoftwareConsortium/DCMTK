@@ -574,7 +574,9 @@ RelativeTimestampConverter::convert (tstring & result,
 HostnamePatternConverter::HostnamePatternConverter (
     const FormattingInfo& info, bool fqdn)
     : PatternConverter(info)
+#ifndef __wasi__
     , hostname_ (helpers::getHostname (fqdn))
+#endif
 { }
 
 
