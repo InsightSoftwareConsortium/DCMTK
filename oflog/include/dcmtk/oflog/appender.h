@@ -36,7 +36,9 @@
 #include "dcmtk/oflog/tstring.h"
 #include "dcmtk/oflog/helpers/pointer.h"
 #include "dcmtk/oflog/spi/filter.h"
+#ifndef __wasi__
 #include "dcmtk/oflog/helpers/lockfile.h"
+#endif
 
 #include <memory>
 
@@ -240,7 +242,9 @@ namespace log4cplus {
         OFunique_ptr<ErrorHandler> errorHandler;
 
         //! Optional system wide synchronization lock.
+#ifndef __wasi__
         OFunique_ptr<helpers::LockFile> lockFile;
+#endif
 
         //! Use lock file for inter-process synchronization of access
         //! to log file.

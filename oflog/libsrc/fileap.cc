@@ -293,6 +293,7 @@ FileAppender::init(const tstring& filename_,
         out.rdbuf ()->pubsetbuf (buffer, bufferSize);
     }
 
+#ifndef __wasi__
     helpers::LockFileGuard guard;
     if (useLockFile && ! lockFile.get ())
     {
@@ -308,6 +309,7 @@ FileAppender::init(const tstring& filename_,
             return;
         }
     }
+#endif
 
     open(mode_);
     imbue (get_locale_by_name (localeName));
@@ -516,7 +518,9 @@ void
 RollingFileAppender::rollover(bool alreadyLocked)
 {
     helpers::LogLog & loglog = helpers::getLogLog();
+#ifndef __wasi__
     helpers::LockFileGuard guard;
+#endif
 
     // Close the current file
     out.close();
@@ -530,7 +534,9 @@ RollingFileAppender::rollover(bool alreadyLocked)
         {
             try
             {
+#ifndef __wasi__
                 guard.attach_and_lock (*lockFile);
+#endif
             }
             catch (STD_NAMESPACE runtime_error const &)
             {
@@ -745,13 +751,17 @@ DailyRollingFileAppender::append(const spi::InternalLoggingEvent& event)
 void
 DailyRollingFileAppender::rollover(bool alreadyLocked)
 {
+#ifndef __wasi__
     helpers::LockFileGuard guard;
+#endif
 
     if (useLockFile && ! alreadyLocked)
     {
         try
         {
+#ifndef __wasi__
             guard.attach_and_lock (*lockFile);
+#endif
         }
         catch (STD_NAMESPACE runtime_error const &)
         {

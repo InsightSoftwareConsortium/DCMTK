@@ -117,12 +117,14 @@ alloc_dc ()
     assert (! default_context);
     assert (default_context_state == DC_UNINITIALIZED);
 
+#ifndef __wasi__
     if (default_context)
         throw STD_NAMESPACE logic_error (
             "alloc_dc() called with non-NULL default_context.");
 
     if (default_context_state == DC_INITIALIZED)
         throw STD_NAMESPACE logic_error ("alloc_dc() called in DC_INITIALIZED state.");
+#endif
 
     default_context = new DefaultContext;
 

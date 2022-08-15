@@ -4,7 +4,7 @@ if(WIN32 AND NOT CYGWIN)
   # clfs needs extra libraries and thus is ignored here
   set(OFLOG_PLATFORM_LIBRARIES winsock.cc windebap.cc winconap.cc)
 else()
-  set(OFLOG_PLATFORM_LIBRARIES unixsock.cc)
+  # set(OFLOG_PLATFORM_LIBRARIES unixsock.cc)
 endif()
 
 DCMTK_ADD_LIBRARY(oflog
@@ -25,7 +25,7 @@ DCMTK_ADD_LIBRARY(oflog
   hierlock.cc
   layout.cc
   lloguser.cc
-  lockfile.cc
+  # lockfile.cc
   log4judp.cc
   logevent.cc
   logger.cc

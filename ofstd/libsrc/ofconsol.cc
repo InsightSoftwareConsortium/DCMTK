@@ -26,12 +26,15 @@
 #include <cassert>
 #ifdef HAVE_UNISTD_H
 BEGIN_EXTERN_C
+#define __wasilibc_unmodified_upstream
+#define __DEFINED_struct_timespec
 #include <unistd.h>
 END_EXTERN_C
 #endif
 
 
 BEGIN_EXTERN_C
+#define __DEFINED_struct_iovec
 #include <fcntl.h>
 #ifdef HAVE_IO_H
 #include <io.h>

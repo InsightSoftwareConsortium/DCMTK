@@ -236,12 +236,16 @@ STD_NAMESPACE ostream &operator<<(STD_NAMESPACE ostream &stream,
 OFBool OFFile::popen(const char *command, const char *modes)
 {
   if (file_) fclose();
+// #ifndef __wasi__
 #if defined(HAVE_POPEN) || defined(__SUNPRO_CC)
   // SunPro defines popen() in a header file where CMake cannot find it, but it is there.
   file_ = :: popen(command, modes);
+#elif __wasi__
+  file_ = :: fopen(command, modes);
 #else
   file_ = _popen(command, modes);
 #endif
+// #endif // __wasi__
   if (file_) popened_ = OFTrue; else storeLastError();
   return (file_ != NULL);
 }
@@ -253,12 +257,14 @@ int OFFile::fclose()
   {
     if (popened_)
     {
+#ifndef __wasi__
 #if defined(HAVE_PCLOSE) || defined(__SUNPRO_CC)
       // SunPro defines pclose() in a header file where CMake cannot find it, but it is there.
       result = :: pclose(file_);
 #else
       result = _pclose(file_);
 #endif
+#endif // __wasi__
     }
     else
     {

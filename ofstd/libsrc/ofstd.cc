@@ -3067,6 +3067,7 @@ extern "C" {
 OFString OFStandard::getHostnameByAddress(const char* addr, int len, int type)
 {
   OFString result;
+#ifndef __wasi__
 
   // We have getaddrinfo(). In this case we also presume that we have
   // getnameinfo(), since both functions were introduced together.
@@ -3104,6 +3105,7 @@ OFString OFStandard::getHostnameByAddress(const char* addr, int len, int type)
   while ((EAI_AGAIN == err) && (rep-- > 0)) err = getnameinfo(sa, nameinfo_len, hostname, 512, NULL, 0, 0);
   if ((err == 0) && (hostname[0] != '\0')) result = hostname;
 
+#endif // __wasi__
   return result;
 }
 
@@ -3113,6 +3115,7 @@ void OFStandard::getAddressByHostname(const char *name, int protocolFamily, OFSo
   result.clear();
   if (NULL == name) return;
 
+#ifndef __wasi__
   struct addrinfo *result_list = NULL;
   int err = EAI_AGAIN;
   int rep = DCMTK_MAX_EAI_AGAIN_REPETITIONS;
@@ -3134,6 +3137,7 @@ void OFStandard::getAddressByHostname(const char *name, int protocolFamily, OFSo
     }
     freeaddrinfo(result_list);
   }
+#endif // __wasi__
 }
 
 

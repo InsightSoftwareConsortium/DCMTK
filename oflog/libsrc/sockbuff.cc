@@ -23,7 +23,7 @@
 #include "dcmtk/oflog/helpers/sockbuff.h"
 #include "dcmtk/oflog/helpers/loglog.h"
 
-#if !defined(_WIN32)
+#if !defined(_WIN32) && !defined(__wasi__)
 #  include <netdb.h>
 #else
 #  include "dcmtk/oflog/config/windowsh.h"
