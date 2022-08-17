@@ -5,6 +5,6 @@ project(dcmsr)
 include_directories("${dcmsr_SOURCE_DIR}/include" "${ofstd_SOURCE_DIR}/include" "${oflog_SOURCE_DIR}/include" "${dcmdata_SOURCE_DIR}/include" "${dcmimgle_SOURCE_DIR}/include" "${dcmimage_SOURCE_DIR}/include" ${ZLIB_INCDIR} ${LIBXML_INCDIR})
 
 # recurse into subdirectories
-foreach(SUBDIR libsrc libcmr apps tests include data)
+foreach(SUBDIR libsrc libcmr apps include data)
   add_subdirectory(${SUBDIR})
 endforeach()
