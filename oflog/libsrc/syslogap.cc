@@ -228,7 +228,7 @@ SysLogAppender::SysLogAppender(const tstring& id)
     // the address of the c_str() result remains stable for openlog &
     // co to use even if we use wstrings.
     , identStr(DCMTK_LOG4CPLUS_TSTRING_TO_STRING (id) )
-#ifndef __wasi__
+#if !defined(__wasi__) && !defined(__EMSCRIPTEN__)
     , hostname (helpers::getHostname (true))
 #endif
 {
@@ -247,7 +247,7 @@ SysLogAppender::SysLogAppender(const helpers::Properties & properties)
     , port (0)
     , syslogSocket ()
     , identStr ()
-#ifndef __wasi__
+#if !defined(__wasi__) && !defined(__EMSCRIPTEN__)
     , hostname (helpers::getHostname (true))
 #endif
 {
@@ -294,7 +294,7 @@ SysLogAppender::SysLogAppender(const tstring& id, const tstring & h,
     // the address of the c_str() result remains stable for openlog &
     // co to use even if we use wstrings.
     , identStr(DCMTK_LOG4CPLUS_TSTRING_TO_STRING (id) )
-#ifndef __wasi__
+#if !defined(__wasi__) && !defined(__EMSCRIPTEN__)
     , hostname (helpers::getHostname (true))
 #endif
 { }

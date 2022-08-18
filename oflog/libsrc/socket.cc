@@ -81,7 +81,7 @@ void
 AbstractSocket::close()
 {
     if(sock != INVALID_SOCKET_VALUE) {
-#ifndef __wasi__
+#if !defined(__wasi__) && !defined(__EMSCRIPTEN__)
         closeSocket(sock);
 #endif
         sock = INVALID_SOCKET_VALUE;
@@ -138,7 +138,7 @@ Socket::Socket()
 Socket::Socket(const tstring& address, unsigned short port, bool udp /*= false*/)
     : AbstractSocket()
 {
-#ifndef __wasi__
+#if !defined(__wasi__) && !defined(__EMSCRIPTEN__)
     sock = connectSocket(address, port, udp, state);
     if (sock == INVALID_SOCKET_VALUE)
         goto error;
@@ -171,7 +171,7 @@ Socket::~Socket()
 bool
 Socket::read(SocketBuffer& buffer)
 {
-#ifdef __wasi__
+#if defined(__wasi__) || defined(__EMSCRIPTEN__)
     return false;
 #else
     long retval = helpers::read(sock, buffer);
@@ -191,7 +191,7 @@ Socket::read(SocketBuffer& buffer)
 bool
 Socket::write(const SocketBuffer& buffer)
 {
-#ifdef __wasi__
+#if defined(__wasi__) || defined(__EMSCRIPTEN__)
     return false;
 #else
     long retval = helpers::write(sock, buffer);
@@ -207,7 +207,7 @@ Socket::write(const SocketBuffer& buffer)
 bool
 Socket::write(const STD_NAMESPACE string & buffer)
 {
-#ifdef __wasi__
+#if defined(__wasi__) || defined(__EMSCRIPTEN__)
     return false;
 #else
     long retval = helpers::write (sock, buffer);

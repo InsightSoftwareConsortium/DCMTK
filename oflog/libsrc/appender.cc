@@ -93,7 +93,7 @@ Appender::Appender()
    threshold(NOT_SET_LOG_LEVEL),
    filter(),
    errorHandler(new OnlyOnceErrorHandler),
-#ifndef __wasi__
+#if !defined(__wasi__) && !defined(__EMSCRIPTEN__)
    lockFile(),
 #endif
    useLockFile(false),
@@ -109,7 +109,7 @@ Appender::Appender(const log4cplus::helpers::Properties & properties)
     , threshold(NOT_SET_LOG_LEVEL)
     , filter()
     , errorHandler(new OnlyOnceErrorHandler)
-#ifndef __wasi__
+#if !defined(__wasi__) && !defined(__EMSCRIPTEN__)
     , lockFile()
 #endif
     , useLockFile(false)
@@ -198,7 +198,7 @@ Appender::Appender(const log4cplus::helpers::Properties & properties)
             = properties.getProperty (DCMTK_LOG4CPLUS_TEXT ("LockFile"));
         if (! lockFileName.empty ())
         {
-#ifndef __wasi__
+#if !defined(__wasi__) && !defined(__EMSCRIPTEN__)
             try
             {
                 lockFile.reset (new helpers::LockFile (lockFileName));
@@ -271,7 +271,7 @@ Appender::doAppend(const log4cplus::spi::InternalLoggingEvent& event)
 
     // Lock system wide lock.
 
-#ifndef __wasi__
+#if !defined(__wasi__) && !defined(__EMSCRIPTEN__)
     helpers::LockFileGuard lfguard;
     if (useLockFile && lockFile.get ())
     {
