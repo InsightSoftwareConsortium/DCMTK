@@ -3,6 +3,7 @@
 if(WIN32 AND NOT CYGWIN)
   # clfs needs extra libraries and thus is ignored here
   set(OFLOG_PLATFORM_LIBRARIES winsock.cc windebap.cc winconap.cc)
+  set(OFLOG_LOCKFILE_LIBRARIES lockfile.cc)
 else()
   # set(OFLOG_PLATFORM_LIBRARIES unixsock.cc)
 endif()
@@ -25,7 +26,7 @@ DCMTK_ADD_LIBRARY(oflog
   hierlock.cc
   layout.cc
   lloguser.cc
-  # lockfile.cc
+  ${OFLOG_LOCKFILE_LIBRARIES} # Enable lockfile.cc on Windows/MSVC for testing purposes. Won't build without it.
   log4judp.cc
   logevent.cc
   logger.cc
