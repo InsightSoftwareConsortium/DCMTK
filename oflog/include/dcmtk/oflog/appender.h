@@ -242,7 +242,7 @@ namespace log4cplus {
         OFunique_ptr<ErrorHandler> errorHandler;
 
         //! Optional system wide synchronization lock.
-#ifndef __wasi__
+#if !defined(__wasi__) && !defined(__EMSCRIPTEN__)
         OFunique_ptr<helpers::LockFile> lockFile;
 #endif
 

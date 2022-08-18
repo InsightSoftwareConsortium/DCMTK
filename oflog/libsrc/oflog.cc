@@ -116,7 +116,7 @@ static void addVariables(dcmtk::log4cplus::helpers::Properties &props, OFCommand
     OFTime::getCurrentTime().getISOFormattedTime(time, OFTrue, OFFalse, OFFalse, OFFalse);
 
     // Set some other useful variables
-#ifndef __wasi__
+#if !defined(__wasi__) && !defined(__EMSCRIPTEN__)
     props.setProperty("hostname", dcmtk::log4cplus::helpers::getHostname(OFFalse));
 #endif
     props.setProperty("pid", dcmtk::log4cplus::helpers::convertIntegerToString(OFStandard::getProcessID()));

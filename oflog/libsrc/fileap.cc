@@ -293,7 +293,7 @@ FileAppender::init(const tstring& filename_,
         out.rdbuf ()->pubsetbuf (buffer, bufferSize);
     }
 
-#ifndef __wasi__
+#if !defined(__wasi__) && !defined(__EMSCRIPTEN__)
     helpers::LockFileGuard guard;
     if (useLockFile && ! lockFile.get ())
     {
@@ -518,7 +518,7 @@ void
 RollingFileAppender::rollover(bool alreadyLocked)
 {
     helpers::LogLog & loglog = helpers::getLogLog();
-#ifndef __wasi__
+#if !defined(__wasi__) && !defined(__EMSCRIPTEN__)
     helpers::LockFileGuard guard;
 #endif
 
@@ -534,7 +534,7 @@ RollingFileAppender::rollover(bool alreadyLocked)
         {
             try
             {
-#ifndef __wasi__
+#if !defined(__wasi__) && !defined(__EMSCRIPTEN__)
                 guard.attach_and_lock (*lockFile);
 #endif
             }
@@ -751,7 +751,7 @@ DailyRollingFileAppender::append(const spi::InternalLoggingEvent& event)
 void
 DailyRollingFileAppender::rollover(bool alreadyLocked)
 {
-#ifndef __wasi__
+#if !defined(__wasi__) && !defined(__EMSCRIPTEN__)
     helpers::LockFileGuard guard;
 #endif
 
@@ -759,7 +759,7 @@ DailyRollingFileAppender::rollover(bool alreadyLocked)
     {
         try
         {
-#ifndef __wasi__
+#if !defined(__wasi__) && !defined(__EMSCRIPTEN__)
             guard.attach_and_lock (*lockFile);
 #endif
         }
