@@ -68,6 +68,10 @@ get_env_var (tstring & value, tstring const & name)
 bool
 parse_bool (bool & val, tstring const & str)
 {
+// Disable this function for wasi. If called, function will return false by default as a failure.
+#ifdef __wasi__
+    return false;
+#else
     log4cplus::tistringstream iss (STD_NAMESPACE string(str.c_str(), str.length()));
     STD_NAMESPACE string word;
     if (! (iss >> word))
@@ -96,6 +100,7 @@ parse_bool (bool & val, tstring const & str)
     }
 
     return result;
+#endif
 }
 
 
