@@ -1,24 +1,15 @@
 # Minimum CMake version required
-cmake_minimum_required(VERSION 3.7.0...4.2.0 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.0.0...3.27.9 FATAL_ERROR)
 
 # Declare project
 project(DCMTK)
-if(NOT DEFINED CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD "11" CACHE STRING "Set C++ standard to be used (98,11,14,17,20)")
-else()
-  set(CMAKE_CXX_STANDARD ${CMAKE_CXX_STANDARD} CACHE STRING "Set C++ standard to be used (98,11,14,17,20)")
-endif()
-mark_as_advanced(CMAKE_CXX_STANDARD)
 
 #-----------------------------------------------------------------------------
 # General project settings to configure DCMTK build process
 #-----------------------------------------------------------------------------
 
 # Modules to be built
-set(DCMTK_MODULES ofstd oflog oficonv dcmdata dcmimgle
-  dcmimage dcmjpeg dcmjpls dcmtls dcmnet dcmsr
-  dcmsign dcmwlm dcmqrdb dcmpstat dcmrt dcmiod dcmfg
-  dcmseg dcmtract dcmpmap dcmect dcmapps
+set(DCMTK_MODULES ofstd oflog oficonv dcmdata dcmimgle dcmimage dcmsr dcmpstat dcmnet dcmqrdb dcmsign dcmtls dcmiod
   CACHE STRING "List of modules that should be built.")
 
 # Provide an interface target to elegantly include the config directory
@@ -134,7 +125,6 @@ if(CMAKE_CROSSCOMPILING)
       get_filename_component(FILE "${DICTIONARY}" NAME)
       set(DCMDICTPATH "${DCMDICTPATH}:${ANDROID_TEMPORARY_FILES_LOCATION}/${FILE}")
     endforeach()
-    set(DCMICONVPATH "${ANDROID_TEMPORARY_FILES_LOCATION}/data")
     configure_file("${DCMTK_SOURCE_DIR}/CMake/CTest/CTestCustomAndroid.cmake.in"
       "${DCMTK_BINARY_DIR}/CTestCustom.cmake" ESCAPE_QUOTES @ONLY
     )

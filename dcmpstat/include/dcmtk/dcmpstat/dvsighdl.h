@@ -28,7 +28,7 @@
 #include "dcmtk/dcmpstat/dpdefine.h"
 #include "dcmtk/ofstd/ofstream.h"
 #include "dcmtk/ofstd/ofstring.h"
-#include "dcmtk/dcmsign/sicertvf.h"
+//#include "dcmtk/dcmsign/sicertvf.h"
 #include "dcmtk/dcmdata/dcerror.h"
 
 
