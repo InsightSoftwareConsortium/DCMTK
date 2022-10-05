@@ -40,7 +40,7 @@
 #include "dcmtk/dcmpstat/dvpshlp.h"   /* for class DVPSHelper */
 #include "dcmtk/dcmimgle/dcmimage.h"  /* for class DicomImage */
 #include "dcmtk/dcmpstat/dvsighdl.h"  /* for class DVSignatureHandler */
-#include "dcmtk/dcmsign/dcsignat.h"   /* for class DcmSignature */
+//#include "dcmtk/dcmsign/dcsignat.h"   /* for class DcmSignature */
 #include "dcmtk/dcmsr/dsrdoc.h"       /* for class DSRDocument */
 #include "dcmtk/dcmsr/dsrcodvl.h"     /* for class DSRCodedEntryValue */
 #include "dcmtk/oflog/fileap.h"       /* for dcmtk::log4cplus::FileAppender */

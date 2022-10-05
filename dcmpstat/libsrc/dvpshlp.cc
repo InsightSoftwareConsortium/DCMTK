@@ -23,7 +23,7 @@
 #include "dcmtk/config/osconfig.h"    /* make sure OS specific configuration is included first */
 #include "dcmtk/dcmpstat/dvpshlp.h"
 #include "dcmtk/dcmpstat/dvpsdef.h"
-#include "dcmtk/dcmnet/dcompat.h"     /* compatibility routines */
+//#include "dcmtk/dcmnet/dcompat.h"     /* compatibility routines */
 #include "dcmtk/dcmdata/dctk.h"
 
 BEGIN_EXTERN_C

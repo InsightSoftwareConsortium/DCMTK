@@ -27,7 +27,7 @@
 #include "dcmtk/dcmpstat/dvpstyp.h"
 #include "dcmtk/dcmpstat/dpdefine.h"
 #include "dcmtk/dcmdata/dctk.h"
-#include "dcmtk/dcmnet/dimse.h"
+//#include "dcmtk/dcmnet/dimse.h"
 
 class DVConfiguration;
 class DVPSPresentationLUT_PList;
