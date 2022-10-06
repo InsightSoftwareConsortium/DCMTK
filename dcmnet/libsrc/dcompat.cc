@@ -206,6 +206,19 @@ int dcmtk_flock(int fd, int operation)
 #endif /* USE__LOCKING */
 #else /* _WIN32 */
 
+#ifdef __wasi__
+
+// WASI does not support file locking
+
+int dcmtk_flock(int fd, int operation)
+{
+  DCMNET_WARN("Unsupported flock(fd[" << fd << "],operation[0x"
+    << std::hex << operation << "])");
+  return 0;
+}
+
+#else /* __wasi__ */
+
 /*
  * Simulate the flock function calls (e.g. Solaris 2 does not have them)
  * using the facilities of fcntl(2)
@@ -255,6 +268,8 @@ int dcmtk_flock(int fd, int operation)
 
     return result;
 }
+
+#endif /* __wasi__ */
 
 #endif /* _WIN32 */
 
