@@ -11,7 +11,7 @@ DCMTK_ADD_LIBRARY(dcmnet
   dccftsmp.cc
   dccfuidh.cc
   dcmlayer.cc
-  dcmtrans.cc
+  #dcmtrans.cc
   dcompat.cc
   dcuserid.cc
   dfindscu.cc

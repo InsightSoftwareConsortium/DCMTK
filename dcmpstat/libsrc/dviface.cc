@@ -19,8 +19,17 @@
  *
  */
 
-
 #include "dcmtk/config/osconfig.h"    /* make sure OS specific configuration is included first */
+
+BEGIN_EXTERN_C
+#ifdef __wasi__
+#define __wasilibc_unmodified_upstream
+#include <unistd.h> // SDJ
+#undef __wasilibc_unmodified_upstream
+#define HAVE_FORK
+#endif //__wasi__
+END_EXTERN_C
+
 
 #include "dcmtk/dcmpstat/dviface.h"
 

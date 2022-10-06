@@ -25,6 +25,11 @@
 #ifdef HAVE_WINDOWS_H
 // on Windows, we need Winsock2 for network functions
 #include <winsock2.h>
+#elif defined(__wasi__)
+#define __DEFINED_struct_iovec
+#define __wasilibc_unmodified_upstream
+#include <sys/socket.h>
+#undef __wasilibc_unmodified_upstream
 #endif
 
 #include "dcmtk/dcmnet/dcompat.h"

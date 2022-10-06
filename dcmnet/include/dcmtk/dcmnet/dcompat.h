@@ -101,7 +101,12 @@ BEGIN_EXTERN_C
 #ifndef DCOMPAT_SYS_SOCKET_H_
 #define DCOMPAT_SYS_SOCKET_H_
 /* some systems don't protect sys/socket.h (e.g. DEC Ultrix) */
+#define __DEFINED_struct_iovec
+#define __DEFINED_struct_timespec
+#define __DEFINED_struct_timeval
+#define __wasilibc_unmodified_upstream
 #include <sys/socket.h>
+#undef __wasilibc_unmodified_upstream
 #endif
 #endif
 #ifdef HAVE_NETINET_IN_H

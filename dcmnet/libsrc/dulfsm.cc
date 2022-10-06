@@ -69,6 +69,13 @@
 #include <winsock2.h>
 // and ws2tcpip for socklen_t
 #include <ws2tcpip.h>
+#else // HAVE_WINDOWS_H
+#ifdef __wasi__
+#define __DEFINED_struct_iovec
+#define __wasilibc_unmodified_upstream
+#include <sys/socket.h>
+#undef __wasilibc_unmodified_upstream
+#endif // __wasi__
 #endif
 
 #ifdef HAVE_SYS_TIME_H
@@ -89,6 +96,11 @@ BEGIN_EXTERN_C
 #endif
 #ifdef HAVE_NETINET_TCP_H
 #include <netinet/tcp.h>        /* for TCP_NODELAY */
+#endif
+#ifdef __wasi__
+#define __wasilibc_unmodified_upstream
+#include <arpa/inet.h>
+#undef __wasilibc_unmodified_upstream
 #endif
 
 END_EXTERN_C
