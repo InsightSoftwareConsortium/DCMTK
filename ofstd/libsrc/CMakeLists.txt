@@ -1,3 +1,7 @@
+set(wasi_srcs)
+if(WASI)
+  set(wasi_srcs wasiExceptionShim.cc)
+endif()
 # create library from source files
 DCMTK_ADD_LIBRARY(ofstd
   ofchrenc.cc
@@ -31,6 +35,7 @@ DCMTK_ADD_LIBRARY(ofstd
   ofwhere.c
   ofstub.cc
   ofsha256.cc
+  ${wasi_srcs}
 )
 
 DCMTK_TARGET_LINK_LIBRARIES(ofstd config ${CHARSET_CONVERSION_LIBS} ${SOCKET_LIBS} ${THREAD_LIBS} ${WIN32_STD_LIBRARIES})
