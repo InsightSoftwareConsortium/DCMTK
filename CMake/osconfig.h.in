@@ -27,7 +27,7 @@
 
 extern "C" {
 
-void * __cxa_allocate_exception(void *);
+void * __cxa_allocate_exception(size_t) throw();
 
 void __cxa_throw(void *, void *, void *);
 
