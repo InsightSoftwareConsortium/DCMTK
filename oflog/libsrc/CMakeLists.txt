@@ -5,7 +5,10 @@ if(WIN32 AND NOT CYGWIN)
   set(OFLOG_PLATFORM_LIBRARIES winsock.cc windebap.cc winconap.cc)
   set(OFLOG_LOCKFILE_LIBRARIES lockfile.cc)
 else()
-  # set(OFLOG_PLATFORM_LIBRARIES unixsock.cc)
+  if (NOT WASI AND NOT EMSCRIPTEN)
+    set(OFLOG_PLATFORM_LIBRARIES unixsock.cc)
+    set(OFLOG_LOCKFILE_LIBRARIES lockfile.cc)
+  endif()
 endif()
 
 DCMTK_ADD_LIBRARY(oflog
