@@ -25,7 +25,9 @@
 #include "dcmtk/dcmdata/dcerror.h"
 #include "dcmtk/ofstd/ofstdinc.h"
 #include "dcmtk/ofstd/ofdiag.h"
+#ifndef __wasi__
 #include <csetjmp>
+#endif
 
 BEGIN_EXTERN_C
 #define boolean ijg_boolean
@@ -38,9 +40,11 @@ BEGIN_EXTERN_C
 #undef const
 #endif
 
+#ifndef __wasi__
 // Solaris defines longjmp() in namespace std, other compilers don't...
 using STD_NAMESPACE longjmp;
 using STD_NAMESPACE jmp_buf;
+#endif
 
 #include DCMTK_DIAGNOSTIC_PUSH
 #include DCMTK_DIAGNOSTIC_IGNORE_VISUAL_STUDIO_DECLSPEC_PADDING_WARNING
@@ -51,8 +55,10 @@ struct DJDIJG16ErrorStruct
   // the standard IJG error handler object
   struct jpeg_error_mgr pub;
 
+#ifndef __wasi__
   // our jump buffer
   jmp_buf setjmp_buffer;
+#endif
 
   // pointer to this
   DJDecompressIJG16Bit *instance;
@@ -97,7 +103,9 @@ END_EXTERN_C
 void DJDIJG16ErrorExit(j_common_ptr cinfo)
 {
   DJDIJG16ErrorStruct *myerr = OFreinterpret_cast(DJDIJG16ErrorStruct*, cinfo->err);
+#ifndef __wasi__
   longjmp(myerr->setjmp_buffer, 1);
+#endif
 }
 
 // message handler for warning messages and the like
@@ -235,6 +243,7 @@ OFCondition DJDecompressIJG16Bit::init()
       jerr->instance = this;
       jerr->pub.error_exit = DJDIJG16ErrorExit;
       jerr->pub.emit_message = DJDIJG16EmitMessage;
+#ifndef __wasi__
       if (setjmp(OFconst_cast(DJDIJG16ErrorStruct *, jerr)->setjmp_buffer))
       {
         // the IJG error handler will cause the following code to be executed
@@ -244,6 +253,7 @@ OFCondition DJDecompressIJG16Bit::init()
         delete OFconst_cast(DJDIJG16SourceManagerStruct *, src);
         return makeOFCondition(OFM_dcmjpeg, EJCode_IJG16_Decompression, OF_error, buffer);
       }
+#endif
     }
     else
     {
@@ -286,6 +296,7 @@ OFCondition DJDecompressIJG16Bit::decode(
 
   if (cinfo==NULL || compressedFrameBuffer==NULL || uncompressedFrameBuffer==NULL) return EC_IllegalCall;
 
+#ifndef __wasi__
   if (setjmp(OFreinterpret_cast(DJDIJG16ErrorStruct*, cinfo->err)->setjmp_buffer))
   {
     // the IJG error handler will cause the following code to be executed
@@ -294,6 +305,7 @@ OFCondition DJDecompressIJG16Bit::decode(
     cleanup();
     return makeOFCondition(OFM_dcmjpeg, EJCode_IJG16_Decompression, OF_error, buffer);
   }
+#endif
 
   // feed compressed buffer into cinfo structure.
   // The buffer will be activated by the next call to DJDIJG16fillInputBuffer.

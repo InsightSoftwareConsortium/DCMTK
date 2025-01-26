@@ -26,7 +26,9 @@
 #include "dcmtk/dcmjpeg/dipijpeg.h"
 #include "dcmtk/ofstd/ofstdinc.h"
 #include "dcmtk/ofstd/ofdiag.h"
+#ifndef __wasi__
 #include <csetjmp>
+#endif
 
 BEGIN_EXTERN_C
 #define boolean ijg_boolean
@@ -41,9 +43,11 @@ BEGIN_EXTERN_C
 #undef const
 #endif
 
+#ifndef __wasi__
 // Solaris defines longjmp() in namespace std, other compilers don't...
 using STD_NAMESPACE longjmp;
 using STD_NAMESPACE jmp_buf;
+#endif
 
 #include DCMTK_DIAGNOSTIC_PUSH
 #include DCMTK_DIAGNOSTIC_IGNORE_VISUAL_STUDIO_DECLSPEC_PADDING_WARNING
@@ -53,8 +57,10 @@ struct DIEIJG8ErrorStruct
 {
     // the standard IJG error handler object
     struct jpeg_error_mgr pub;
+#ifndef __wasi__
     // our jump buffer
     jmp_buf setjmp_buffer;
+#endif
     // pointer to this
     const DiJPEGPlugin *instance;
 };
@@ -82,7 +88,9 @@ END_EXTERN_C
 void DIEIJG8ErrorExit(j_common_ptr cinfo)
 {
   DIEIJG8ErrorStruct *myerr = OFreinterpret_cast(DIEIJG8ErrorStruct*, cinfo->err);
+#ifndef __wasi__
   longjmp(myerr->setjmp_buffer, 1);
+#endif
 }
 
 // message handler for warning messages and the like
@@ -173,6 +181,7 @@ int DiJPEGPlugin::write(DiImage *image,
             jerr.instance = this;
             jerr.pub.error_exit = DIEIJG8ErrorExit;
             jerr.pub.output_message = DIEIJG8OutputMessage;
+#ifndef __wasi__
             if (setjmp(jerr.setjmp_buffer))
             {
                 // the IJG error handler will cause the following code to be executed
@@ -185,6 +194,7 @@ int DiJPEGPlugin::write(DiImage *image,
                 /* return error code */
                 return 0;
             }
+#endif
             jpeg_set_defaults(&cinfo);
             cinfo.optimize_coding = TRUE;
             /* Set quantization tables for selected quality. */
