@@ -25,7 +25,9 @@
 #include "dcmtk/dcmdata/dcerror.h"
 #include "dcmtk/ofstd/ofstdinc.h"
 #include "dcmtk/ofstd/ofdiag.h"
+#ifndef __wasi__
 #include <csetjmp>
+#endif
 
 // use 16K blocks for temporary storage of compressed JPEG data
 #define IJGE16_BLOCKSIZE 16384
@@ -42,9 +44,11 @@ BEGIN_EXTERN_C
 #undef const
 #endif
 
+#ifndef __wasi__
 // Solaris defines longjmp() in namespace std, other compilers don't...
 using STD_NAMESPACE longjmp;
 using STD_NAMESPACE jmp_buf;
+#endif
 
 #include DCMTK_DIAGNOSTIC_PUSH
 #include DCMTK_DIAGNOSTIC_IGNORE_VISUAL_STUDIO_DECLSPEC_PADDING_WARNING
@@ -56,8 +60,10 @@ struct DJEIJG16ErrorStruct
   // the standard IJG error handler object
   struct jpeg_error_mgr pub;
 
+#ifndef __wasi__
   // our jump buffer
   jmp_buf setjmp_buffer;
+#endif
 
   // pointer to this
   DJCompressIJG16Bit *instance;
@@ -91,7 +97,9 @@ END_EXTERN_C
 void DJEIJG16ErrorExit(j_common_ptr cinfo)
 {
   DJEIJG16ErrorStruct *myerr = OFreinterpret_cast(DJEIJG16ErrorStruct*, cinfo->err);
+#ifndef __wasi__
   longjmp(myerr->setjmp_buffer, 1);
+#endif
 }
 
 // message handler for warning messages and the like
@@ -192,6 +200,7 @@ OFCondition DJCompressIJG16Bit::encode(
   jerr.instance = this;
   jerr.pub.error_exit = DJEIJG16ErrorExit;
   jerr.pub.emit_message = DJEIJG16EmitMessage;
+#ifndef __wasi__
   if (setjmp(jerr.setjmp_buffer))
   {
     // the IJG error handler will cause the following code to be executed
@@ -200,6 +209,7 @@ OFCondition DJCompressIJG16Bit::encode(
     jpeg_destroy_compress(&cinfo);
     return makeOFCondition(OFM_dcmjpeg, EJCode_IJG16_Compression, OF_error, buffer);
   }
+#endif
   OFjpeg_create_compress(&cinfo);
 
   // initialize client_data
